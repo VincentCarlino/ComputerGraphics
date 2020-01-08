@@ -1,0 +1,4 @@
+/Users/vincentcarlino/code/ComputerGraphics/lab0_setup/Build/CMakeFiles/rebuild_cache.dir
+/Users/vincentcarlino/code/ComputerGraphics/lab0_setup/Build/CMakeFiles/edit_cache.dir
+/Users/vincentcarlino/code/ComputerGraphics/lab0_setup/Build/CMakeFiles/Lab0.dir
+/Users/vincentcarlino/code/ComputerGraphics/lab0_setup/Build/CMakeFiles/Lab0_autogen.dir
