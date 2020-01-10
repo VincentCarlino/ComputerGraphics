@@ -39,6 +39,7 @@ void PPM::savePPM(std::string outputFileName){
     outFile.open(outFileName);
 
     // Write P3 and comment to out file
+    // Write x and y values separated by a space
     /////////
 
     unsigned int i = 0;
@@ -47,7 +48,7 @@ void PPM::savePPM(std::string outputFileName){
         outFile << m_PixelData[i] << std::endl;
     }
 
-    outFile.close()
+    outFile.close();
 
 }
 
@@ -72,23 +73,45 @@ void PPM::darken(){
 // Sets a pixel to a specific R,G,B value 
 void PPM::setPixel(int x, int y, int R, int G, int B){
     // TODO: Implement
+    if(m_PixelData.length() >= ((3 * x) + (3 * y * m_width) + 2)) {
+        unsigned int pixelRIndex = (3 * x) + (3 * y * m_width);
+        m_PixelData[pixelRIndex] = R;
+        m_PixelData[pixelRIndex + 1] = G;
+        m_PixelData[pixelRIndex + 2] = B;
+    }
+    /*
+
+    R Values for each pixel start at
+    
+    0, 0 = 0
+    1, 0 = 3
+    2, 0 = 6
+    3, 0 = 9
+    0, 1 = 12 
+    1, 1 = 15
+    2, 1 = 18
+
+    3x + 3y(m_width)
+
+    4 * 8
+
+    0 0 0    0 0 0    0 0 0    0 0 0
+    0 0 0    0 0 0    0 0 0    0 0 0
+    0 0 0    0 0 0    0 0 0    0 0 0
+    0 0 0    0 0 0    0 0 0    0 0 0
+    0 0 0    0 0 0    0 0 0    0 0 0
+    0 0 0    0 0 0    0 0 0    0 0 0
+    0 0 0    0 0 0    0 0 0    0 0 0
+    0 0 0    0 0 0    0 0 0    0 0 0
+
+    R Values have 0 after i modulo 3
+    G Values have 1 after i modulo 3
+    B Values have 2 after i modulo 3
+
+    Find R value, move to next index to set G value, move to next index to set B value
+    */
+
 }
 
 
-/* 
-3 * 8
 
-0 0 0    0 0 0    0 0 0 
-0 0 0    0 0 0    0 0 0 
-0 0 0    0 0 0    0 0 0 
-0 0 0    0 0 0    0 0 0 
-0 0 0    0 0 0    0 0 0 
-0 0 0    0 0 0    0 0 0 
-0 0 0    0 0 0    0 0 0 
-0 0 0    0 0 0    0 0 0 
-
-R Values have 0 after i modulo 3
-G Values have 1 after i modulo 3
-B Values have 2 after i modulo 3
-
-*/
