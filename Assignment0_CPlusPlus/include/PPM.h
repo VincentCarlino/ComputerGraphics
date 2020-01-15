@@ -3,13 +3,33 @@
  *  
  *  Class for working with P3 PPM images specifically.
  *
- *  @author your_name_here
+ *  @author Vincent Carlino
  *  @bug No known bugs.
  */
 #ifndef PPM_H
 #define PPM_H
 
 #include <string>
+#include <vector>
+
+class ColorRGB{
+public:
+    // Constructor takes in RGB values
+    ColorRGB(int R, int G, int B);
+    // Destructor clears memory that has been allocated
+    ~ColorRGB();
+    // Sets the RGB values of this pixel
+    void setValues(int R, int G, int B);
+    // Subtracts 50 from each of the RGB components of this pixel.
+    void darken();
+    // Prints this RGB Pixel
+    std::string toString();
+
+private:
+    int red{0};
+    int green{0};
+    int blue{0};
+};
 
 class PPM{
 public:
@@ -28,7 +48,7 @@ public:
     void setPixel(int x, int y, int R, int G, int B);
     // Returns the raw pixel data in an array.
     // You may research what 'inline' does.
-    inline unsigned char* pixelData(){ return m_PixelData; }
+    inline std::vector<ColorRGB> pixelData(){ return m_PixelData; }
     // Returns image width
     inline int getWidth(){ return m_width; }
     // Returns image height
@@ -38,10 +58,12 @@ public:
 private:    
     // Store the raw pixel data here
     // Data is R,G,B format
-    unsigned char* m_PixelData;
+    std::vector<ColorRGB> m_PixelData;
     // Store width and height of image.
     int m_width{0};
     int m_height{0};
+
+    void generatePPMFromLines(std::vector<std::string> lines);
 };
 
 
