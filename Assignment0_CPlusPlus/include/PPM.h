@@ -25,6 +25,10 @@ public:
     // Prints this RGB Pixel
     std::string toString();
 
+    inline int getRed() { return red; }
+    inline int getGreen() { return green; }
+    inline int getBlue() { return blue; }
+
 private:
     int red{0};
     int green{0};
@@ -59,6 +63,8 @@ private:
     // Store the raw pixel data here
     // Data is R,G,B format
     std::vector<ColorRGB> m_PixelData;
+
+    std::vector<int> m_PixValues;
     // Store width and height of image.
     int m_width{0};
     int m_height{0};
