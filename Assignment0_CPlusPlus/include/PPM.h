@@ -12,29 +12,6 @@
 #include <string>
 #include <vector>
 
-class ColorRGB{
-public:
-    // Constructor takes in RGB values
-    ColorRGB(int R, int G, int B);
-    // Destructor clears memory that has been allocated
-    ~ColorRGB();
-    // Sets the RGB values of this pixel
-    void setValues(int R, int G, int B);
-    // Subtracts 50 from each of the RGB components of this pixel.
-    void darken();
-    // Prints this RGB Pixel
-    std::string toString();
-
-    inline int getRed() { return red; }
-    inline int getGreen() { return green; }
-    inline int getBlue() { return blue; }
-
-private:
-    int red{0};
-    int green{0};
-    int blue{0};
-};
-
 class PPM{
 public:
     // Constructor loads a filename with the .ppm extension
@@ -52,25 +29,18 @@ public:
     void setPixel(int x, int y, int R, int G, int B);
     // Returns the raw pixel data in an array.
     // You may research what 'inline' does.
-    inline std::vector<ColorRGB> pixelData(){ return m_PixelData; }
+    inline std::vector<int> pixelData(){ return m_PixelData; }
     // Returns image width
     inline int getWidth(){ return m_width; }
     // Returns image height
     inline int getHeight(){ return m_height; }
 // NOTE:    You may add any helper functions you like in the
 //          private section.
-private:    
-    // Store the raw pixel data here
-    // Data is R,G,B format
-    std::vector<ColorRGB> m_PixelData;
-
-    std::vector<int> m_PixValues;
+private:
+    std::vector<int> m_PixelData;
     // Store width and height of image.
     int m_width{0};
     int m_height{0};
-
-    void generatePPMFromLines(std::vector<std::string> lines);
 };
-
 
 #endif
