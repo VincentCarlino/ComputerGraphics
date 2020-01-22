@@ -1,4 +1,0 @@
-/Users/vincentcarlino/code/ComputerGraphics/Assignment0_CPlusPlus/Build/CMakeFiles/rebuild_cache.dir
-/Users/vincentcarlino/code/ComputerGraphics/Assignment0_CPlusPlus/Build/CMakeFiles/edit_cache.dir
-/Users/vincentcarlino/code/ComputerGraphics/Assignment0_CPlusPlus/Build/CMakeFiles/Assignment0.dir
-/Users/vincentcarlino/code/ComputerGraphics/Assignment0_CPlusPlus/Build/CMakeFiles/Assignment0_autogen.dir

@@ -1,7 +1,5 @@
 # Assignment 1 - Modern C++ PPM Library
 
-*TODO*: Please edit the following information in your assignment
-
 * Name and partners name (At most 1 partner for this assignment): 
 * How many hours did it take you to complete this assignment? 
 * Did you collaborate or share ideas with any other students/TAs/Professors? 
