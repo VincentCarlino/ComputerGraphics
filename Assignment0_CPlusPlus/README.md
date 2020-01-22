@@ -1,13 +1,14 @@
 # Assignment 1 - Modern C++ PPM Library
 
-* Name and partners name (At most 1 partner for this assignment): 
-* How many hours did it take you to complete this assignment? 
-* Did you collaborate or share ideas with any other students/TAs/Professors? 
+* Name and partners name (At most 1 partner for this assignment): Vincent Carlino
+* How many hours did it take you to complete this assignment?
+  * about 7 hours
+* Did you collaborate or share ideas with any other students/TAs/Professors?
+  * No
 * Did you use any external resources? 
-  * (tbd if any)
-  * (tbd if any)
-  * (tbd if any)
+  * I used various stack overflow posts while debugging my code
 * (Optional) What was the most interesting part of the assignment? How would you improve this assignment?
+  * I think a little more guidance could have been given with using string stream and/or converting between a string to an unsigned character.  I had so much trouble with getting this bit to work that I just admitted defeat to C++ and used stoi to convert my RGB values.  I also primarily used vectors since I'm more comfortable with how vectors work than using pointers in C++.  I admit this is something I can work on on my own.  
   
 ## Description
 
