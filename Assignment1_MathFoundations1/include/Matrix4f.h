@@ -4,6 +4,7 @@
 #define MATRIX4F_H
 
 #include <cmath>
+#include <iostream>
 
 // We need to Vector4f header in order to multiply a matrix
 // by a vector.
@@ -17,7 +18,7 @@ private:
 public:
     Matrix4f() = default;
 
-    // TODO: Row or column major order you decide!
+    // TODO: Row or column major order you decide! (This is currently column major)
     // Matrix constructor with 9 scalar values.
     Matrix4f( float n00, float n01, float n02, float n03,
               float n10, float n11, float n12, float n13,
@@ -40,8 +41,26 @@ public:
     }
 
     // Makes the matrix an identity matrix
-    void identity(){
-        // TODO:
+    void identity() {
+      for(int x = 0; x <= 3; ++x) {
+        for(int y = 0; y <= 3; ++y) {
+          if(x == y) {
+            n[x][y] = 1;
+          }
+          else {
+            n[x][y] = 0;
+          }
+        }
+      }
+    }
+
+    // Prints the matrix to cout, mainly for debugging
+    void printMatrix() {
+      std::cout << "Printing matrix: " << std::endl;
+      std::cout << n[0][0] << " " << n[0][1] << " " << n[0][2] << " " << n[0][3] << std::endl;
+      std::cout << n[1][0] << " " << n[1][1] << " " << n[1][2] << " " << n[1][3] << std::endl;
+      std::cout << n[2][0] << " " << n[2][1] << " " << n[2][2] << " " << n[2][3] << std::endl;
+      std::cout << n[3][0] << " " << n[3][1] << " " << n[3][2] << " " << n[3][3] << std::endl;
     }
 
     // Index operator with two dimensions
@@ -68,27 +87,29 @@ public:
 
     // Make a matrix rotate about various axis
     Matrix4f MakeRotationX(float t){
-        // TODO:
-        return(Matrix4f()); // You will need to modify this.
-                            // When you test, test against glm_gtx_transform
+        return(Matrix4f(1.0f,0,0,0,
+                        0,cos(t),-(sin(t)),0,
+                        0,sin(t),cos(t),0,
+                        0,0,0,1.0f));
     }
     Matrix4f MakeRotationY(float t){
-        // TODO:
-        return(Matrix4f()); // You will need to modify this.
-                            // When you test, test against glm_gtx_transform
+        return(Matrix4f(cos(t),0,sin(t),0,
+                        0,1.0f,0,0,
+                        -(sin(t)),0,cos(t),0,
+                        0,0,0,1.0f));
     }
     Matrix4f MakeRotationZ(float t){
-        // TODO:
-        return(Matrix4f()); // You will need to modify this.
-                            // When you test, test against glm_gtx_transform
+        return(Matrix4f(cos(t),-(sin(t)),0,0,
+                        sin(t),cos(t),0,0,
+                        0,0,1.0f,0,
+                        0,0,0,1.0f)); 
     }
     Matrix4f MakeScale(float sx,float sy, float sz){
-        // TODO:
-        return(Matrix4f()); // You will need to modify this.
-                            // When you test, test against glm_gtx_transform
+        return(Matrix4f(sx,0,0,0,
+                        0,sy,0,0,
+                        0,0,sz,0,
+                        0,0,0,1.0f));
     }
-
-
 };
 
 // Matrix Multiplication
