@@ -57,10 +57,10 @@ public:
     // Prints the matrix to cout, mainly for debugging
     void printMatrix() {
       std::cout << "Printing matrix: " << std::endl;
-      std::cout << n[0][0] << " " << n[0][1] << " " << n[0][2] << " " << n[0][3] << std::endl;
-      std::cout << n[1][0] << " " << n[1][1] << " " << n[1][2] << " " << n[1][3] << std::endl;
-      std::cout << n[2][0] << " " << n[2][1] << " " << n[2][2] << " " << n[2][3] << std::endl;
-      std::cout << n[3][0] << " " << n[3][1] << " " << n[3][2] << " " << n[3][3] << std::endl;
+      std::cout << "[ " << n[0][0] << " " << n[0][1] << " " << n[0][2] << " " << n[0][3] << " ]" << std::endl;
+      std::cout << "[ " << n[1][0] << " " << n[1][1] << " " << n[1][2] << " " << n[1][3] << " ]" << std::endl;
+      std::cout << "[ " << n[2][0] << " " << n[2][1] << " " << n[2][2] << " " << n[2][3] << " ]" << std::endl;
+      std::cout << "[ " << n[3][0] << " " << n[3][1] << " " << n[3][2] << " " << n[3][3] << " ]" << std::endl;
     }
 
     // Index operator with two dimensions
@@ -114,20 +114,24 @@ public:
 
 // Matrix Multiplication
 Matrix4f operator *(const Matrix4f& A, const Matrix4f& B){
-  // TODO:
   Matrix4f mat4;
+  for(int x = 0; x <=3; ++x) {
+    for(int y = 0; y <=3; ++y) {
+      // TODO: mat4[x][y] = Dot product of row x of A and col y of B
+    }
+  }
 
   return mat4;
 }
 
 // Matrix multiply by a vector
-
 Vector4f operator *(const Matrix4f& M, const Vector4f& v){
-  // TODO:
-  Vector4f vec;
 
+  Vector4f vec;
+  for(int x = 0; x <=3; ++x) {
+    // TODO: vec[x] = Dot product of row x of M and v
+  }
   return vec;
 }
-
 
 #endif

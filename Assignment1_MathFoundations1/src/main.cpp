@@ -184,13 +184,10 @@ int main(){
     std::cout << "Passed 4: " << unitTest4() << " \n";
     std::cout << "Passed 5: " << unitTest5() << " \n";
 
-    Matrix4f myMatrix( 1.0f,2.0f,3.0f,4.0f,
-        			     4.0f,2.0f,2.0f,3.0f,
-		        	     3.0f,4.0f,1.0f,2.0f,
-			             2.0f,3.0f,4.0f,1.0f);
-    myMatrix.printMatrix();
-    myMatrix.identity();
-    myMatrix.printMatrix();
+    Vector4f myVector(1, 2, 3, 4);
+    myVector.printVector();
+
+    std::cout << Magnitude(myVector) << std::endl;
 
     return 0;
 }
