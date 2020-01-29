@@ -187,7 +187,20 @@ int main(){
     Vector4f myVector(1, 2, 3, 4);
     myVector.printVector();
 
-    std::cout << Magnitude(myVector) << std::endl;
+    Matrix4f myMatrix(0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3);
+
+    Vector4f b(0, 1, 1, 0);
+    Vector4f a(1, 2, 3, 0);
+    Vector4f projection = Project(a, b);
+
+    projection.printVector();
+    // Vector4f row0 = myMatrix[2];
+    Vector4f col0 = col(myMatrix, 0);
+    // myMatrix.printMatrix();
+    // row0.printVector();
+    col0.printVector();
+
+    // std::cout << Magnitude(myVector) << std::endl;
 
     return 0;
 }

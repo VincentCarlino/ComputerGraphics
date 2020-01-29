@@ -91,8 +91,7 @@ struct Vector4f{
 
 // Compute the dot product of a Vector4f
 inline float Dot(const Vector4f& a, const Vector4f& b){
-  // TODO:
-  return 0;
+  return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
 }
 
 // Multiplication of a vector by a scalar values
@@ -134,16 +133,15 @@ inline Vector4f operator -(const Vector4f& a, const Vector4f& b){
 // Vector Projection
 // Note: This is the vector projection of 'a' onto 'b'
 inline Vector4f Project(const Vector4f& a, const Vector4f& b){
-  // TODO:
-  Vector4f vec;
+  Vector4f vec = b * (Dot(a, b) / (Magnitude(b) * Magnitude(b)));
   return vec;
 }
 
 // Set a vectors magnitude to 1
 // Note: This is NOT generating a normal vector
 inline Vector4f Normalize(const Vector4f& v){
-  // TODO:
-  Vector4f vec;
+  float mag = Magnitude(v);
+  Vector4f vec = v / mag;
   return vec;
 }
 
@@ -154,8 +152,12 @@ inline Vector4f Normalize(const Vector4f& v){
 //       to vectors in 3-dimensions. Simply ignore w, and set to (0,0,0,1)
 //       for this vector.
 inline Vector4f CrossProduct(const Vector4f& a, const Vector4f& b){
-  // TODO:
-  Vector4f vec;
+  Vector4f vec(0, 0, 0, 1);
+
+  vec.x = a.y * b.z - a.z * b.y;
+  vec.y = a.z * b.x - a.x * b.z;
+  vec.z = a.x * b.y - a.y * b.x;
+
   return vec;
 }
 
