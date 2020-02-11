@@ -132,10 +132,10 @@ void BasicWidget::initializeGL()
   // Define our vert colors
   static const GLfloat colors[16] =
   {
-      1.0f, 0.0f, 0.0f, 1.0f, // red
-      0.0f, 1.0f, 0.0f, 1.0f, // green
-      0.0f, 0.0f, 1.0f, 1.0f, // blue
-      1.0f, 1.0f, 0.0f, 1.0f  // yellow
+      0.8f, 0.8f, 0.8f, 1.0f,
+      0.8f, 0.8f, 0.8f, 1.0f,
+      0.8f, 0.8f, 0.8f, 1.0f,
+      0.8f, 0.8f, 0.8f, 1.0f,
   };
   // Define our indices
   static const GLuint idx[6] =
@@ -192,7 +192,7 @@ void BasicWidget::paintGL()
   glDisable(GL_DEPTH_TEST);
   glDisable(GL_CULL_FACE);
 
-  glClearColor(0.f, 0.f, 0.f, 1.f);
+  glClearColor(0.0f, 20.0f, 20.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   shaderProgram_.bind();
