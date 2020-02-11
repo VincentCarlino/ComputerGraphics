@@ -1,8 +1,12 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
 #include "BasicWidget.h"
 
 //////////////////////////////////////////////////////////////////////
 // Publics
-BasicWidget::BasicWidget(QWidget* parent) : QOpenGLWidget(parent)
+BasicWidget::BasicWidget(QWidget* parent) : QOpenGLWidget(parent), vbo_(QOpenGLBuffer::VertexBuffer), cbo_(QOpenGLBuffer::VertexBuffer), ibo_(QOpenGLBuffer::IndexBuffer)
 {
   setFocusPolicy(Qt::StrongFocus);
 }
@@ -21,6 +25,27 @@ BasicWidget::~BasicWidget()
 
 //////////////////////////////////////////////////////////////////////
 // Privates
+void parseObj(std::string fileName)
+{
+  std::cout << "Parsing file: " << fileName << std::endl;
+
+  // QVector3D(float xpos, float ypos, float zpos)
+  
+  std::ifstream inFile;
+  inFile.open(fileName);
+  std::string line;
+
+  if(inFile.is_open()){
+    while(getline(inFile, line)){
+      std::cout << line << std::endl;
+    }
+  }
+
+  std::cout << "EOF" << std::endl;
+
+}
+
+
 QString BasicWidget::vertexShaderString() const
 {
   QString str =
@@ -80,6 +105,7 @@ void BasicWidget::keyReleaseEvent(QKeyEvent* keyEvent)
 }
 void BasicWidget::initializeGL()
 {
+  parseObj("../objects/cube.obj");
   makeCurrent();
   initializeOpenGLFunctions();
 
@@ -92,10 +118,10 @@ void BasicWidget::initializeGL()
   qDebug() << "  Version: " << reinterpret_cast<const char*>(glGetString(GL_VERSION));
   qDebug() << "  GLSL Version: " << reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
 
-  // TODO: Initialize the rest
   createShader();
-
-  // Add vertex data
+  
+  // TODO:  Add vertex and index data to draw two triangles
+  // Define our verts
   static const GLfloat verts[12] =
   {
 	-0.8f, -0.8f, 0.0f, // Left vertex position
@@ -117,7 +143,6 @@ void BasicWidget::initializeGL()
       0, 1, 2, 2, 1, 3
   };
 
-  // Temporary bind of our shader.
   shaderProgram_.bind();
   // Create and prepare a vbo
   vbo_.setUsagePattern(QOpenGLBuffer::StaticDraw);
@@ -173,8 +198,9 @@ void BasicWidget::paintGL()
   shaderProgram_.bind();
   vao_.bind();
   // TODO: Change number of indices drawn
-  glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+  glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
   // ENDTODO
   vao_.release();
   shaderProgram_.release();
+  // TODO:  render.
 }

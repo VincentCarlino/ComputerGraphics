@@ -12,8 +12,16 @@ class BasicWidget : public QOpenGLWidget, protected QOpenGLFunctions
   Q_OBJECT
 
 private:
+  QString vertexShaderString() const;
+  QString fragmentShaderString() const;
+  void createShader();
+  QOpenGLVertexArrayObject vao_;
 
 protected:
+  QOpenGLBuffer vbo_;
+  QOpenGLBuffer ibo_;
+  QOpenGLBuffer cbo_;
+  QOpenGLShaderProgram shaderProgram_;
   // Required interaction overrides
   void keyReleaseEvent(QKeyEvent* keyEvent) override;
 
