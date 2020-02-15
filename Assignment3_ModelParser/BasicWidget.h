@@ -16,11 +16,14 @@ private:
   QString fragmentShaderString() const;
   void createShader();
   QOpenGLVertexArrayObject vao_;
+  
+  QMatrix4x4 model_;
+  QMatrix4x4 view_;
+  QMatrix4x4 projection_;
 
 protected:
   QOpenGLBuffer vbo_;
   QOpenGLBuffer ibo_;
-  QOpenGLBuffer cbo_;
   QOpenGLShaderProgram shaderProgram_;
   // Required interaction overrides
   void keyReleaseEvent(QKeyEvent* keyEvent) override;
