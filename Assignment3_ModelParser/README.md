@@ -5,13 +5,18 @@
 *TODO*: Please edit the following information in your assignment
 
 * Name and partners name(At most 1 partner for this Assignment): 
+  Vincent Carlino
 * How many hours did it take you to complete this Assignment? 
+  Combined total of 5 hours
 * Did you collaborate or share ideas with any other students/TAs/Professors? 
+  No
 * Did you use any external resources? 
-  * (tbd if any)
-  * (tbd if any)
-  * (tbd if any)
+  - QT documentation
+  - Various threads on stackoverflow
 * (Optional) What was the most interesting part of the assignment? How would you improve this assignment?
+  The most interesting part about this assignment was figuring out where I should be passing in the vertices to the vbo.  
+  My current implementation is parsing the obj files each time a key is pressed, which I acknowledge is poor resource management.  
+  An alternative to this that I thought of included parsing the object files globally so that the vertex arrays and index arrays could be used without needing to parse multiple times, but that seemed like bad design.
   
 ## Description
 

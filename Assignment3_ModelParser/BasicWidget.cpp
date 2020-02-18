@@ -8,6 +8,9 @@
 bool wireframeMode = false;
 bool useObject1 = true;
 
+std::string OBJECT1_PATH = "../objects/bunny.obj";
+std::string OBJECT2_PATH = "../objects/monkey.obj";
+
 //////////////////////////////////////////////////////////////////////
 // Publics
 BasicWidget::BasicWidget(QWidget* parent) : QOpenGLWidget(parent), vbo_(QOpenGLBuffer::VertexBuffer), ibo_(QOpenGLBuffer::IndexBuffer)
@@ -210,10 +213,10 @@ void BasicWidget::resizeGL(int w, int h)
 int BasicWidget::setVerts()
 {
 
-  std::vector<float> vertices = parseObjVerts("../objects/monkey.obj");
-  std::vector<int> i1 = parseObjIdx("../objects/monkey.obj", 0);
-  std::vector<int> i2 = parseObjIdx("../objects/bunny.obj", vertices.size() / 3);
-  std::vector<float> obj2verts = parseObjVerts("../objects/bunny.obj");
+  std::vector<float> vertices = parseObjVerts(OBJECT1_PATH);
+  std::vector<int> i1 = parseObjIdx(OBJECT1_PATH, 0);
+  std::vector<int> i2 = parseObjIdx(OBJECT2_PATH, vertices.size() / 3);
+  std::vector<float> obj2verts = parseObjVerts(OBJECT2_PATH);
 
   vertices.insert( vertices.end(), obj2verts.begin(), obj2verts.end());
 
@@ -284,7 +287,7 @@ void BasicWidget::paintGL()
   
   int idxToDraw = setVerts();
 
-  // TODO: Change number of indices drawn
+  // If we are set to wireframe mode, render the obj as a wireframe
   if(wireframeMode) {
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   }
@@ -292,8 +295,6 @@ void BasicWidget::paintGL()
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   }
   glDrawElements(GL_TRIANGLES, idxToDraw, GL_UNSIGNED_INT, 0);
-  // ENDTODO
   vao_.release();
   shaderProgram_.release();
-  // TODO:  render.
 }
