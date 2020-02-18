@@ -5,7 +5,8 @@
 
 #include "BasicWidget.h"
 
-float camera_x = 0.0f;
+bool wireframeMode = false;
+bool useObject1 = true;
 
 //////////////////////////////////////////////////////////////////////
 // Publics
@@ -26,14 +27,10 @@ BasicWidget::~BasicWidget()
 
 //////////////////////////////////////////////////////////////////////
 // Privates
-void parseObj(std::string fileName)
+std::vector<float> parseObjVerts(std::string fileName1)
 {
-  std::cout << "Parsing file: " << fileName << std::endl;
-
-  // QVector3D(float xpos, float ypos, float zpos)
-  
   std::ifstream inFile;
-  inFile.open(fileName);
+  inFile.open(fileName1);
   std::string line;
 
   std::stringstream ss;
@@ -41,8 +38,6 @@ void parseObj(std::string fileName)
   std::string header;
 
   std::vector<float> vertices;
-  std::vector<float> vertexNormals;
-  std::vector<float> idx;
 
   if(inFile.is_open()){
     while(getline(inFile, line)){
@@ -51,36 +46,57 @@ void parseObj(std::string fileName)
       ss >> header;
 
       if(header == "v") {
-        std::cout << "VERTEX" << std::endl;
-
         while(ss >> currentVal) {
-          std::cout << "Vertex value: " << currentVal << std::endl;
+          vertices.push_back(stof(currentVal));
         }
       }
-      else if(header == "vn") {
-        std::cout << "VERTEX NORMAL" << std::endl;
-
-        while(ss >> currentVal) {
-          std::cout << "Vertex normal value: " << currentVal << std::endl;
-        }
-      }
-      else if(header == "f") {
-        std::cout << "FACE" << std::endl;
-        
-        while(ss >> currentVal) {
-          std::cout << "Face value: " << currentVal << std::endl;
-        }
-      }
-
       ss.clear();
-
     }
   }
+  inFile.close();
 
-  std::cout << "EOF" << std::endl;
+  return vertices;
 
 }
 
+std::vector<int> parseObjIdx(std::string fileName, int offset)
+{
+  std::ifstream inFile;
+  inFile.open(fileName);
+  std::string line;
+  std::stringstream ss;
+  std::string currentVal;
+  std::string header;
+
+  std::vector<int> idxs;
+
+  size_t pos = 0;
+  std::string token;
+
+  if(inFile.is_open()) {
+    while(getline(inFile, line)){
+
+      ss.str(line);
+      ss >> header;
+
+      if(header == "f") {
+        while(ss >> currentVal) {
+          pos = currentVal.find("//");
+          token = currentVal.substr(0, pos);
+          currentVal.erase(0, pos + 2);
+
+          idxs.push_back(stoi(token) - 1 + offset);
+        }
+      }
+      
+      ss.clear();
+    }
+  }
+
+  inFile.close();
+  return idxs;
+
+}
 
 QString BasicWidget::vertexShaderString() const
 {
@@ -110,7 +126,7 @@ QString BasicWidget::fragmentShaderString() const
 	"out vec4 color;\n"
 	"void main()\n"
 	"{\n"
-  "  color = vec4(0.0f, 1.0f, 0.6f, 1.0f);\n"
+  "  color = vec4(0.0f, 0.5f, 0.7f, 1.0f);\n"
 	"}\n";
   return str;
 }
@@ -139,17 +155,25 @@ void BasicWidget::createShader()
 // Protected
 void BasicWidget::keyReleaseEvent(QKeyEvent* keyEvent)
 {
-  if(keyEvent->key() == Qt::Key_Left) {
-    camera_x -= 0.1f;
-    qDebug() << camera_x;
-  } else if(keyEvent->key() == Qt::Key_Right) {
-    camera_x += 0.1f;
-    qDebug() << camera_x;
+  if(keyEvent->key() == Qt::Key_W) {
+    wireframeMode = !wireframeMode;
+    update();
+  }
+  else if (keyEvent->key() == Qt::Key_Q) {
+    close();
+    std::exit(EXIT_SUCCESS);
+  }
+  else if (keyEvent->key() == Qt::Key_1) {
+    useObject1 = true;
+    update();
+  }
+  else if (keyEvent->key() == Qt::Key_2) {
+    useObject1 = false;
+    update();
   }
 }
 void BasicWidget::initializeGL()
 {
-  parseObj("../objects/cube.obj");
   makeCurrent();
   initializeOpenGLFunctions();
 
@@ -162,72 +186,7 @@ void BasicWidget::initializeGL()
   qDebug() << "  Version: " << reinterpret_cast<const char*>(glGetString(GL_VERSION));
   qDebug() << "  GLSL Version: " << reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
 
-  // TODO: parse obj files
-
   createShader();
-  
-  // Define our cube verts
-  static const GLfloat verts[24] =
-  {
-    -1.0, -1.0, -1.0,
-    -1.0, -1.0, 1.0,
-    -1.0, 1.0, -1.0,
-    -1.0, 1.0, 1.0,
-    1.0, -1.0, -1.0,
-    1.0, -1.0, 1.0,
-    1.0, 1.0, -1.0,
-    1.0, 1.0, 1.0
-  };
-  // Define our vert colors
-  static const GLfloat colors[16] =
-  {
-      0.8f, 0.8f, 0.8f, 1.0f,
-      0.8f, 0.8f, 0.8f, 1.0f,
-      0.8f, 0.8f, 0.8f, 1.0f,
-      0.8f, 0.8f, 0.8f, 1.0f,
-  };
-  // Define our indices
-  static const GLuint idx[36] =
-  {
-      0,4,1,
-      1,2,0,
-      1,4,5,
-      1,7,3,
-      2,4,0,
-      2,7,6,
-      3,2,1,
-      3,7,2,
-      4,7,5,
-      5,7,1,
-      6,4,2,
-      6,7,4
-  };
-
-  shaderProgram_.bind();
-  // Create and prepare a vbo
-  vbo_.setUsagePattern(QOpenGLBuffer::StaticDraw);
-  vbo_.create();
-  // Bind our vbo inside our vao
-  vbo_.bind();
-  vbo_.allocate(verts, 24 * sizeof(GL_FLOAT));
-  
-  // TODO:  Generate our index buffer
-  ibo_.setUsagePattern(QOpenGLBuffer::StaticDraw);
-  ibo_.create();
-  ibo_.bind();
-  ibo_.allocate(idx, 36 * sizeof(GL_UNSIGNED_INT));
-  // ENDTODO
-
-  // Create a VAO to keep track of things for us.
-  vao_.create();
-  vao_.bind();
-  vbo_.bind();
-  shaderProgram_.enableAttributeArray(0);
-  shaderProgram_.setAttributeBuffer(0, GL_FLOAT, 0, 3);
-  ibo_.bind();
-  // Releae the vao THEN the vbo
-  vao_.release();
-  shaderProgram_.release();
 
   glViewport(0, 0, width(), height());
 }
@@ -238,13 +197,81 @@ void BasicWidget::resizeGL(int w, int h)
   
   shaderProgram_.bind();
   projection_.perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f); // Set the perspective of our projection matrix (inspired by https://stackoverflow.com/questions/36231719/creating-a-camera-with-opengl-3-3-and-qt-5-6)
-  view_.lookAt(QVector3D(3,3,8),QVector3D(0,0,0),QVector3D(0,1,0)); // Set the view to look at (0, 0, 0) from (0, 0, 8) with an up vector of "down"
+  view_.lookAt(QVector3D(0,2,3),QVector3D(0,1,0),QVector3D(0,1,0));
 
   shaderProgram_.setUniformValue("viewMatrix", view_);
   shaderProgram_.setUniformValue("projectionMatrix", projection_);
   shaderProgram_.setUniformValue("modelMatrix", model_);
 
+  vao_.create();
   shaderProgram_.release();
+}
+
+int BasicWidget::setVerts()
+{
+
+  std::vector<float> vertices = parseObjVerts("../objects/monkey.obj");
+  std::vector<int> i1 = parseObjIdx("../objects/monkey.obj", 0);
+  std::vector<int> i2 = parseObjIdx("../objects/bunny.obj", vertices.size() / 3);
+  std::vector<float> obj2verts = parseObjVerts("../objects/bunny.obj");
+
+  vertices.insert( vertices.end(), obj2verts.begin(), obj2verts.end());
+
+  GLfloat verts[vertices.size()];
+
+  GLuint idxOne[i1.size()];
+  GLuint idxTwo[i2.size()];
+
+
+  for (int i = 0; i < vertices.size(); ++i) {
+    verts[i] = vertices[i];
+  }
+  for (int i = 0; i < i1.size(); ++i) {
+    idxOne[i] = i1[i];
+  }
+  for (int i = 0; i < i2.size(); ++i) {
+    idxTwo[i] = i2[i];
+  }
+
+  shaderProgram_.bind();
+  // Create and prepare a vbo
+  vbo_.setUsagePattern(QOpenGLBuffer::StaticDraw);
+  vbo_.create();
+  // Bind our vbo inside our vao
+  vbo_.bind();
+  vbo_.allocate(verts, vertices.size() * sizeof(GL_FLOAT));
+  
+
+  ibo_.setUsagePattern(QOpenGLBuffer::StaticDraw);
+  ibo_.create();
+  ibo_.bind();
+  if(useObject1) {
+    ibo_.allocate(idxOne, i1.size() * sizeof(GL_UNSIGNED_INT));
+  }
+  else {
+    ibo_.allocate(idxTwo, i2.size() * sizeof(GL_UNSIGNED_INT));
+  }
+
+  // Create a VAO to keep track of things for us.
+  vao_.bind();
+  vbo_.bind();
+  shaderProgram_.enableAttributeArray(0);
+  shaderProgram_.setAttributeBuffer(0, GL_FLOAT, 0, 3);
+  ibo_.bind();
+  // Releae the vao THEN the vbo
+  vao_.release();
+  shaderProgram_.release();
+
+  shaderProgram_.bind();
+  vao_.bind();
+
+  if(useObject1) {
+    return i1.size();
+  }
+  else {
+    return i2.size();
+  }
+
 }
 
 void BasicWidget::paintGL()
@@ -254,11 +281,17 @@ void BasicWidget::paintGL()
 
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  
+  int idxToDraw = setVerts();
 
-  shaderProgram_.bind();
-  vao_.bind();
   // TODO: Change number of indices drawn
-  glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+  if(wireframeMode) {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  }
+  else {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  }
+  glDrawElements(GL_TRIANGLES, idxToDraw, GL_UNSIGNED_INT, 0);
   // ENDTODO
   vao_.release();
   shaderProgram_.release();
