@@ -1,0 +1,4 @@
+/Users/vincentcarlino/code/ComputerGraphics/Lab7_AbstractionsAndTextures/Build/CMakeFiles/rebuild_cache.dir
+/Users/vincentcarlino/code/ComputerGraphics/Lab7_AbstractionsAndTextures/Build/CMakeFiles/edit_cache.dir
+/Users/vincentcarlino/code/ComputerGraphics/Lab7_AbstractionsAndTextures/Build/CMakeFiles/App.dir
+/Users/vincentcarlino/code/ComputerGraphics/Lab7_AbstractionsAndTextures/Build/CMakeFiles/App_autogen.dir
