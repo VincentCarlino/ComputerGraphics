@@ -24,8 +24,7 @@ void TerrainQuad::init(const QString& textureFile)
     QVector<unsigned int> stripIdx;
     QVector3D normal(0.0, 1.0, 0.0);
 
-    // TODO:  You may need to change the path here.
-    QImage heightImage("../../terrain2.ppm");
+    QImage heightImage("../terrain2.ppm");
 
     unsigned int curIdx = 0;
     // Populate our grid
@@ -105,11 +104,11 @@ void TerrainQuad::draw(const QMatrix4x4& world, const QMatrix4x4& view, const QM
     // TODO - After seeing the initial heightmap by querying in C++ the height image
     // uncommment these lines to change implementations to use the vertex shader!
     // We bind our height texture at Texture Unit 0
-//    f.glActiveTexture(GL_TEXTURE0);
-//    heightTexture_.bind();
+    f.glActiveTexture(GL_TEXTURE0);
+    heightTexture_.bind();
 
     // And our color texture at Texture Unit 1.
-//    f.glActiveTexture(GL_TEXTURE1);
+    f.glActiveTexture(GL_TEXTURE1);
     texture_.bind();
 
     // Setup our shader uniforms for multiple textures.  Make sure we use the correct
@@ -119,11 +118,11 @@ void TerrainQuad::draw(const QMatrix4x4& world, const QMatrix4x4& view, const QM
 //    shader_.setUniformValue("tex", GL_TEXTURE0);
 //    shader_.setUniformValue("colorTex", GL_TEXTURE1 - GL_TEXTURE0);
     for (int s = 0; s < numStrips_; ++s) {
-        // TODO:  Draw the correct number of triangle strips using glDrawElements
+        f.glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
     }
-//    heightTexture_.release();
+    heightTexture_.release();
     texture_.release();
-//    f.glActiveTexture(GL_TEXTURE0);
+    f.glActiveTexture(GL_TEXTURE0);
     vao_.release();
     shader_.release();
 }

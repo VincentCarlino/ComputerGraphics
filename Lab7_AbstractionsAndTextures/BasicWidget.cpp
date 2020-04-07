@@ -38,26 +38,53 @@ void BasicWidget::initializeGL()
   initializeOpenGLFunctions();
 
   qDebug() << QDir::currentPath();
-  QString texFile = "../../cat3.ppm";
-  QVector<QVector3D> pos;
+  QString texFile = "../cat3.ppm";
+  QVector<QVector3D> pos0;
+  QVector<QVector3D> pos1;
+  QVector<QVector3D> pos2;
   QVector<QVector3D> norm;
   QVector<QVector2D> texCoord;
   QVector<unsigned int> idx;
-  pos << QVector3D(-0.8, -0.8, 0.0);
-  pos << QVector3D(0.8, -0.8, 0.0);
-  pos << QVector3D(-0.8, 0.8, 0.0);
-  pos << QVector3D(0.8, 0.8, 0.0);
+  
+  // Init vertex positions
+  pos0 << QVector3D(-0.8, -0.8, 0.0);
+  pos0 << QVector3D(0.8, -0.8, 0.0);
+  pos0 << QVector3D(-0.8, 0.8, 0.0);
+  pos0 << QVector3D(0.8, 0.8, 0.0);
+
+  pos1 << QVector3D(0.2, -1.8, 0.0);
+  pos1 << QVector3D(1.8, -0.8, 0.0);
+  pos1 << QVector3D(0.2, 0.8, 0.0);
+  pos1 << QVector3D(1.8, 0.8, 0.0);
+
+  pos2 << QVector3D(0.2, -1.8, 0.0);
+  pos2 << QVector3D(-1.8, -2.8, 0.0);
+  pos2 << QVector3D(1.2, 0.8, 0.0);
+  pos2 << QVector3D(0.8, 1.8, 0.0);
+
   // We don't actually use the normals right now, but this will be useful later!
   norm << QVector3D(0.0, 0.0, 1.0);
   norm << QVector3D(0.0, 0.0, 1.0);
   norm << QVector3D(0.0, 0.0, 1.0);
   norm << QVector3D(0.0, 0.0, 1.0);
+
   // TODO:  Make sure to add texture coordinates to pass into the initialization of our renderable
+  texCoord << QVector2D(0.0, 0.0);
+  texCoord << QVector2D(1.0, 0.0);
+  texCoord << QVector2D(0.0, 1.0);
+  texCoord << QVector2D(1.0, 1.0);
+
+  // END TODO
   idx << 0 << 1 << 2 << 2 << 1 << 3;
 
-  Renderable* ren = new Renderable();
-  ren->init(pos, norm, texCoord, idx, texFile);
-  renderables_.push_back(ren);
+  Renderable* ren0 = new Renderable();
+  Renderable* ren1 = new Renderable();
+  Renderable* ren2 = new Renderable();
+  ren0->init(pos0, norm, texCoord, idx, texFile);
+  ren1->init(pos1, norm, texCoord, idx, texFile);
+  renderables_.push_back(ren0);
+  renderables_.push_back(ren1);
+  renderables_.push_back(ren2);
   glViewport(0, 0, width(), height());
   frameTimer_.start();
 }
