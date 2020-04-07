@@ -13,7 +13,9 @@ void main() {
   // Set our output fragment color to whatever we pull from our input texture (Note, change 'tex' to whatever the sampler is named)
   // The variable 'color' will now contain whatever would have been on screen if we were rendering directly.
   vec3 color = texture(FBOTex, texCoords).rgb;
+
+  vec3 blue = vec3(color.z, color.x, color.y);
   // We can now modify things a bit to provide some nice post-processing effects.
   // TODO - Implement some type of post-processing effect here.
-  fragColor = vec4(color, 1.0);
+  fragColor = vec4(blue, 1.0);
 }

@@ -9,7 +9,7 @@
 // Lab application
 #include "App.h"
 
-static bool enableGLDebug = true;
+static bool enableGLDebug = false;
 
 int main(int argc, char** argv) {
   QApplication a(argc, argv);
