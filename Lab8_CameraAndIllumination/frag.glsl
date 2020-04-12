@@ -33,8 +33,10 @@ uniform PointLight pointLights[1];  // Our lights
 
 void main() {
   // Set our output fragment color to whatever we pull from our input texture (Note, change 'tex' to whatever the sampler is named)
+
+  vec3 red_light = vec3(1.0f, 0.0f, 0.0f);
   fragColor = texture(tex, texCoords);
 
-  // TODO:  Implement some form of lighting.
+  fragColor = vec4(fragColor.rgb * red_light, 1.0f);
   
 }
