@@ -8,7 +8,7 @@
 #include <QtGui>
 #include <QtOpenGL>
 
-Renderable::Renderable() : vbo_(QOpenGLBuffer::VertexBuffer), ibo_(QOpenGLBuffer::IndexBuffer), texture_(QOpenGLTexture::Target2D), numTris_(0), vertexSize_(0), rotationAxis_(0.0, 0.0, 1.0), rotationSpeed_(0.25)
+Renderable::Renderable() : lightPos_(0.5f, 0.5f, -2.0f), vbo_(QOpenGLBuffer::VertexBuffer), ibo_(QOpenGLBuffer::IndexBuffer), texture_(QOpenGLTexture::Target2D), numTris_(0), vertexSize_(0), rotationAxis_(0.0, 0.0, 1.0), rotationSpeed_(0.25)
 {
 	rotationAngle_ = 0.0;
 }
@@ -53,9 +53,6 @@ QString getTextureFile(const QString mtlFileName, const QString path)
 
 	QDir parentDirectory(path);
 	parentDirectory.cdUp();
-
-	// qDebug() << parentDirectory.cleanPath(mtlFileName);
-	// qDebug() << parentDirectory.filePath(mtlFileName);
 
 	QFile f(parentDirectory.filePath(mtlFileName));
 	
@@ -146,7 +143,6 @@ void Renderable::loadObject(const QString path)
     	line = in.readLine();
 	};
 
-	qDebug() << "Finished reading";
 
 	init(positions, normals, texCoords, indexes, folderPath);
 
@@ -173,15 +169,11 @@ void Renderable::init(const QVector<QVector3D>& positions, const QVector<QVector
 	bool norm = false;
 	bool tex = false;
 
-	qDebug() << indexes.size();
-	qDebug() << indexes.length();
-
 	// set our number of trianges.
 	numTris_ = indexes.size() / 3 / 3;
 
 	// num verts (used to size our vbo)
 	int numVerts = indexes.size() / 3;
-	qDebug() << numVerts << "\n" << "HERE IT GOES";
 	vertexSize_ = 3 + 3 + 2;  // Position + normal + texCoord
 	int numVBOEntries = numVerts * vertexSize_;
 
@@ -264,13 +256,16 @@ void Renderable::init(const QVector<QVector3D>& positions, const QVector<QVector
 
 void Renderable::update(const qint64 msSinceLastFrame)
 {
-	// // For this lab, we want our polygon to rotate. 
-	// float sec = msSinceLastFrame / 1000.0f;
-	// float anglePart = sec * rotationSpeed_ * 360.f;
-	// rotationAngle_ += anglePart;
-	// while(rotationAngle_ >= 360.0) {
-	// 	rotationAngle_ -= 360.0;
-	// }
+
+	// This is where we want to maintain our light.
+    float secs = (float)msSinceLastFrame / 1000.0f;
+    float angle = secs * 180.0f;
+
+	QMatrix4x4 rot;
+    rot.setToIdentity();
+    rot.rotate(angle, 0.0, 1.0, 0.0);
+    QVector3D newPos = rot * lightPos_;
+    lightPos_ = newPos;
 }
 
 void Renderable::draw(const QMatrix4x4& world, const QMatrix4x4& view, const QMatrix4x4& projection)
@@ -291,6 +286,14 @@ void Renderable::draw(const QMatrix4x4& world, const QMatrix4x4& view, const QMa
 	shader_.setUniformValue("modelMatrix", modelMat);
 	shader_.setUniformValue("viewMatrix", view);
 	shader_.setUniformValue("projectionMatrix", projection);
+
+	shader_.setUniformValue("pointLights[0].color", 1.0f, 1.0f, 1.0f);
+    shader_.setUniformValue("pointLights[0].position", lightPos_);
+    shader_.setUniformValue("pointLights[0].ambientIntensity", 0.5f);
+    shader_.setUniformValue("pointLights[0].specularStrength", 0.5f);
+    shader_.setUniformValue("pointLights[0].constant", 1.0f);
+    shader_.setUniformValue("pointLights[0].linear", 0.09f);
+    shader_.setUniformValue("pointLights[0].quadratic", 0.032f);
 
 	vao_.bind();
 	texture_.bind();

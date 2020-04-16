@@ -33,10 +33,21 @@ uniform PointLight pointLights[1];  // Our lights
 
 void main() {
   // Set our output fragment color to whatever we pull from our input texture (Note, change 'tex' to whatever the sampler is named)
-
   vec3 red_light = vec3(1.0f, 0.0f, 0.0f);
   fragColor = texture(tex, texCoords);
+  PointLight pL = pointLights[0];
 
-  fragColor = vec4(fragColor.rgb * red_light, 1.0f);
+  // Lighting logic pulled from Lecture 8
+  vec3 ambient = pL.ambientIntensity * pL.color;
+  vec3 normal = normalize(norm);
+
+  vec3 lightDir = normalize(pL.position - fragPos);
+
+  float diffImpact = max(dot(normal, lightDir), 0.0);
+  vec3 diffuseLight = diffImpact * pL.color;
+
+  vec3 Lighting = diffuseLight + ambient;
+
+  fragColor = vec4(fragColor.rgb * Lighting * red_light, 1.0f);
   
 }

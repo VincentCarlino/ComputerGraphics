@@ -3,13 +3,15 @@
 *TODO*: Please edit the following information in your assignment
 
 * Name and partners name(At most 1 partner for this Assignment): 
+  Vincent Carlino
 * How many hours did it take you to complete this Assignment? 
+  6
 * Did you collaborate or share ideas with any other students/TAs/Professors? 
+  No
 * Did you use any external resources? 
-  * (tbd if any)
-  * (tbd if any)
-  * (tbd if any)
+  I used some posts on stack overflow that I forgot to save the links of.
 * (Optional) What was the most interesting part of the assignment? How would you improve this assignment?
+  I chose to do the particle emitter part of this assignment.  I was a little cut for time so I wasn't able to figure out how to destroy particles that should have expired.  So this is a very inefficient program.  If I had more time I'd put more thought into that.  
   
 ## Description
 
@@ -74,9 +76,9 @@ public:
 
   void update(unsigned int msSinceLastFrame) {
     // First, loop through all particles and update/draw them
-	// Then, determine how many particles must be emitted
-	// Then emit them one at a time.
-	// Then, clean up our particle vector by removing dead particles
+    // Then, determine how many particles must be emitted
+    // Then emit them one at a time.
+    // Then, clean up our particle vector by removing dead particles
 	
   }
   void emitParticle();

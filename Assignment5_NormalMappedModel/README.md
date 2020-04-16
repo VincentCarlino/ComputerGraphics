@@ -6,13 +6,15 @@
 *TODO*: Please edit the following information in your assignment
 
 * Name and partners name(At most 1 partner for this Assignment): 
+  Vincent Carlino
 * How many hours did it take you to complete this Assignment? 
-* Did you collaborate or share ideas with any other students/TAs/Professors? 
+  2
+* Did you collaborate or share ideas with any other students/TAs/Professors?
+  No 
 * Did you use any external resources? 
-  * (tbd if any)
-  * (tbd if any)
-  * (tbd if any)
+  No
 * (Optional) What was the most interesting part of the assignment? How would you improve this assignment?
+  I went the easy route for this one and added lighting to the existing model loader.  I wasn't quite able to figure out how to use normal maps from an external source.  If I had more time I'd probably work on getting the full assignment working.  
   
 ## Description
 

@@ -16,6 +16,7 @@ class BasicWidget : public QWidget
   Q_OBJECT
 
 protected:
+  QString objectPath_;
   QColor backgroundColor_;
   ScanBuffer buffer_;
   qint64 prevTicks_;
@@ -35,6 +36,7 @@ protected:
 public:
   BasicWidget(QWidget* parent=nullptr);
   virtual ~BasicWidget();
+  
 
   // Make sure we have some size that makes sense.
   QSize sizeHint() const {return QSize(800,600);}
